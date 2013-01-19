@@ -35,7 +35,9 @@ return the identity function."
          out))
 
      (coll? form)
-     (into (empty form) (map (partial walk dispatch) form))
+     ;; #'into strips metadata :-/
+     (with-meta (into (empty form) (map (partial walk dispatch) form))
+       (meta form))
 
      :else ;; unknown type, don't know how to recurse
      form)))
