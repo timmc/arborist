@@ -26,8 +26,12 @@ return the identity function."
            (let [[k* v*] (if-let [transform (dispatch kv)]
                            (transform kv)
                            [(walk dispatch k) (walk dispatch v)])]
-             (recur (assoc (dissoc out k) k* v*)
-                    (rest pairs))))
+             (if (= k k*)
+               ;; protect records by not dissoc'ing basis keys, when possible
+               (recur (assoc out k v*)
+                      (rest pairs))
+               (recur (assoc (dissoc out k) k* v*)
+                      (rest pairs)))))
          out))
 
      (coll? form)
