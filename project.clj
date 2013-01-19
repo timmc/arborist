@@ -1,4 +1,4 @@
-(defproject org.timmc/arborist "0.1.0-SNAPSHOT"
+(defproject org.timmc/arborist "1.0.0"
   :description "Tree-walking with shortcutting."
   :url "https://github.com/timmc/arborist"
   :license {:name "Eclipse Public License"
