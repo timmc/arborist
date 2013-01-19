@@ -1,7 +1,18 @@
-(ns org.timmc.arborist)
+(ns org.timmc.arborist
+  "Walk and modify data structures. API consists of the walk function.
+
+Tips:
+
+* To prevent descent without modifying a node, the dispatch function may
+  return the identity function.
+* To handle data structures that arborist doesn't know how to descend into,
+  the dispatch function should return a transformer that calls the
+  walk function manually. Remember to preserve metadata when implementing.
+* Arborist does not normally descend into metadata, but a transformer could
+  again do this manually.")
 
 (defn walk
-  "Walk a Clojure data structure recursively. The dispatch function
+  "Walk a data structure recursively. The dispatch function
 is called on composite and atomic data structures. If it returns
 nil/false for a form, descent continues (if possible). If it instead
 returns a transformer function, that transformer is called on the form
@@ -10,8 +21,7 @@ and its results are used to replace the form.
 Descent does not continue into the results of a replacement; it is up to
 the transformer to call the walk function as necesary on child nodes.
 
-To prevent descent without modifying a node, the dispatch function may
-return the identity function."
+Metadata and collection types are preserved."
   [dispatch form]
   (if-let [transform (dispatch form)]
     (transform form)
